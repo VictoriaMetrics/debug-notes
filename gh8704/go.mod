@@ -1,4 +1,4 @@
-module gh8704
+module anote
 
 go 1.24.2
 

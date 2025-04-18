@@ -33,7 +33,7 @@ make victoria-metrics
 5. Run load script without timeout:
 
 ```
-go run ../debug-notes/GH-8704/simulate_remote_write.go 0 
+go run ../debug-notes/gh8704/simulate_remote_write.go 0 
 ```
 
 You should observe a lot of successful writes and some rare warnings like:
@@ -45,7 +45,7 @@ You should observe a lot of successful writes and some rare warnings like:
 6. Run load script with 1sec timeout:
 
 ```
-go run ../debug-notes/GH-8704/simulate_remote_write.go 1s 
+go run ../debug-notes/gh8704/simulate_remote_write.go 1s 
 ```
 
 You should observe a lot of successful writes and some rare warnings like:

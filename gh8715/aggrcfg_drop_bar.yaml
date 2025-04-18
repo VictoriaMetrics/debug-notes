@@ -1,0 +1,3 @@
+- interval: 1s
+  drop_input_labels: ["bar"]
+  outputs: [max]
