@@ -1,3 +1,4 @@
+# Operator
 
 Create cluster:
 ```
@@ -45,10 +46,33 @@ Print VictoriaMetrics versions:
 TODO
 ```
 
+# Storage
+
 Install storage
 ```
 kubectl apply -f vmsingle.yaml
 ```
+
+Check store is running
+```
+kubectl get pods -n vm -l "app.kubernetes.io/name=vmsingle"
+```
+
+Push some metrics
+```
+curl -i -X POST \
+  --url http://127.0.0.1:8429/api/v1/import/prometheus \
+  --header 'Content-Type: text/plain' \
+  --data 'a_metric{foo="fooVal"} 1
+'
+```
+
+Query metrics
+```
+curl -i --url http://127.0.0.1:8429/api/v1/query_range?query=a_metric
+```
+
+or explore in vmui http://127.0.0.1:8429/vmui
 
 
 
