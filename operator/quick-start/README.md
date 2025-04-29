@@ -74,5 +74,18 @@ curl -i --url http://127.0.0.1:8429/api/v1/query_range?query=a_metric
 
 or explore in vmui http://127.0.0.1:8429/vmui
 
+Let's see where the files are stored
+```
+POD_NAME=$(kubectl get pod -l "app.kubernetes.io/name=vmsingle"  -n vm -o jsonpath="{.items[0].metadata.name}")
+kubectl exec -n vm "$POD_NAME" -- ls -l  /victoria-metrics-data
+```
+
+# Scrape metrics
+
+TODO
+
+# Alerts
+
+TODO
 
 
