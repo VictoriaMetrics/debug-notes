@@ -17,7 +17,10 @@ Install operator
 
 Run operator checks
 ```
-./03-check-operator.sh
+./03-check-operator-is-running.sh
+./04-print-vm-resources.sh
+./05-print-operator-version.sh
+./06-print-operator-default-envs.sh
 ```
 
 # Storage
