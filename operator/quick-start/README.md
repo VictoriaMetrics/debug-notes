@@ -27,40 +27,40 @@ Run operator checks
 
 Create vmsingle manifest
 ```
-./10-create-vmsingle-demo.sh
+./10-create-vmsingle-manifest.sh
 ```
 
 Install vmsingle
 ```
-./11-install-vmsingle-demo.sh
+./11-install-vmsingle.sh
 ```
 
 Check store is running
 ```
-./12-check-vmsingle-demo.sh
+./12-check-vmsingle-is-running.sh
 ```
 
 Push some metrics
 ```
 # port forward in one terminal
-./13-port-forward-vmsingle-demo.sh
+./13-port-forward-vmsingle.sh
 
 # push metrics in another
-./14-import-metrics-to-vmsingle-demo.sh
+./14-import-metrics.sh
 ```
 
 Query metrics
 ```
 # port forward in one terminal
-./13-port-forward-vmsingle-demo.sh
+./13-port-forward-vmsingle.sh
 
 # query metrics in another, or explore in vmui http://127.0.0.1:8429/vmui
-./15-query-metrics-frmo-vmsingle-demo.sh
+./15-query-metrics.sh
 ```
 
 Let's see where the files are stored
 ```
-./16-list-files-vmsingle-demo.sh
+./16-list-storage-files.sh
 ```
 
 # Scrape metrics
