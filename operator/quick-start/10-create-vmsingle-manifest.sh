@@ -11,5 +11,5 @@ metadata:
   namespace: vm
 spec:
   # make it optional, remove from this file
-  retentionPeriod: "4d"
+  retentionPeriod: "1"
 EOF
