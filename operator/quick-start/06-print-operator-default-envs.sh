@@ -3,4 +3,9 @@
 set -e
 set -x
 
-kubectl get pods -n vm -l "control-plane=vm-operator" -o jsonpath='{range .items[*]}{range .spec.containers[?(@.name=="manager")]}{.image}{"\n"}{end}{end}'
+OPERATOR_POD_NAME=$(kubectl get pod -l "control-plane=vm-operator"  -n vm -o jsonpath="{.items[0].metadata.name}")
+
+# print versions
+kubectl exec -n vm "$OPERATOR_POD_NAME" 2>&1 -- /app --printDefaults | grep VERSION
+
+kubectl exec -n vm "$OPERATOR_POD_NAME" 2>&1 -- /app --printDefaults | grep VERSION
