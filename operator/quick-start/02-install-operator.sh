@@ -3,4 +3,4 @@
 set -e
 set -x
 
-kubectl apply -f  victoria-metrics-operator.yaml
+kubectl apply -f  operator-and-crds.yaml
