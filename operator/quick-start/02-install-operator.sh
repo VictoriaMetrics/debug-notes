@@ -3,4 +3,4 @@
 set -e
 set -x
 
-kubectl apply -f  operator-and-crds.yaml
+kubectl apply -f operator-and-crds.yaml
