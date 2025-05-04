@@ -28,5 +28,5 @@ spec:
     app.kubernetes.io/name: demo-app
   ports:
     - port: 9100
-      name: http
+      name: metrics
 EOF

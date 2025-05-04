@@ -13,5 +13,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: demo-app
   endpoints:
-  - port: http
+  - port: metrics
 EOF
+
+kubectl apply -f demo-app-scrape.yaml

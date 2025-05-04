@@ -12,5 +12,5 @@ metadata:
 spec:
   selectAllByDefault: true
   remoteWrite:
-    - url: "http://vmsingle-demo.vm.svc:8480/prometheus/api/v1/write"
+    - url: "http://vmsingle-demo.vm.svc:8429/api/v1/write"
 EOF
