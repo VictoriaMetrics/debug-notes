@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > demo-app-scrape.yaml
+cat <<'EOF' > demo-app-scrape.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:

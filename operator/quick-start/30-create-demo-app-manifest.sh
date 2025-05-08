@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > demo-app.yaml
+cat <<'EOF' > demo-app.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:

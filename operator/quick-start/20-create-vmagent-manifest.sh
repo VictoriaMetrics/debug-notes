@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > vmagent-demo.yaml
+cat <<'EOF' > vmagent-demo.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAgent
 metadata:

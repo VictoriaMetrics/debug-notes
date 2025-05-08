@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > demo-app-rule.yaml
+cat <<'EOF' > demo-app-rule.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:

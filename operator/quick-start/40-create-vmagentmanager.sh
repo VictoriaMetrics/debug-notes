@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > vmalertmanager-demo.yaml
+cat <<'EOF' > vmalertmanager-demo.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlertmanager
 metadata:
