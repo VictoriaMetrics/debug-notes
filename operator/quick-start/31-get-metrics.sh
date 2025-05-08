@@ -3,4 +3,5 @@
 set -e
 set -x
 
-kubectl exec -n default  demo-app -- curl -i http://127.0.0.1:8080/metrics
+DEMO_APP_POD=$(kubectl get pod -n default -l "app.kubernetes.io/name=demo-app" -o jsonpath="{.items[0].metadata.name}");
+kubectl exec -n default  ${DEMO_APP_POD} -- curl -i http://127.0.0.1:8080/metrics;
