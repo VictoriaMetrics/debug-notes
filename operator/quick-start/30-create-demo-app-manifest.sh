@@ -4,17 +4,29 @@ set -e
 set -x
 
 cat <<EOF > demo-app.yaml
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: demo-app
   namespace: default
   labels:
     app.kubernetes.io/name: demo-app
 spec:
-  containers:
-    - name: main
-      image: docker.io/victoriametrics/demo-app:1.0
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: demo-app
+    spec:
+      containers:
+        - name: main
+          image: docker.io/victoriametrics/demo-app:1.0
+          ports:
+            - containerPort: 9100
+              name: metrics
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +40,8 @@ spec:
     app.kubernetes.io/name: demo-app
   ports:
     - port: 9100
+      targetPort: metrics
       name: metrics
 EOF
+
+kubectl -n default apply -f demo-app.yaml
