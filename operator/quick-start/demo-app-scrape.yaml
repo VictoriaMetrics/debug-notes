@@ -8,3 +8,4 @@ spec:
       app.kubernetes.io/name: demo-app
   endpoints:
   - port: http
+    path: /metrics

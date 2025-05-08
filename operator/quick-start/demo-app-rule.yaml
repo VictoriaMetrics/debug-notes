@@ -1,0 +1,17 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: demo
+  namespace: default
+spec:
+  groups:
+    - name: demo-app
+      rules:
+        - alert: todo
+          expr: delta(vmalert_config_last_reload_errors_total{job!=""}[5m]) > 0
+          for: 10s
+          labels:
+            severity: major
+            job:  "{{ .job }}"
+          annotations:
+            description: 'error reloading vmalert config, reload count for 5 min {{ $value }}'

@@ -14,6 +14,7 @@ spec:
       app.kubernetes.io/name: demo-app
   endpoints:
   - port: http
+    path: /metrics
 EOF
 
 kubectl apply -f demo-app-scrape.yaml
