@@ -12,7 +12,6 @@ metadata:
 spec:
   groups:
     - name: demo-app
-      interval: 10s
       rules:
         - alert: DemoAlertFiring
           expr: 'sum(demo_alert_firing{job="demo-app",namespace="default"}) by (job,pod,namespace) > 0'
