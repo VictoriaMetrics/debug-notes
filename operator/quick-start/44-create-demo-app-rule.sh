@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+cat <<'EOF' > demo-app-rule.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
@@ -16,3 +22,7 @@ spec:
             pod: '{{ $labels.pod }}'
           annotations:
             description: 'demo-app pod {{ $labels.pod }} is firing demo alert'
+EOF
+
+
+kubectl apply -f demo-app-rule.yaml

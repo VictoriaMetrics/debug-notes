@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: docker.io/victoriametrics/demo-app:1.1
+          image: docker.io/victoriametrics/demo-app:1.2
 ---
 apiVersion: v1
 kind: Service

@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<'EOF' > vmalertmanager-demo.yaml
+cat <<EOF > vmalertmanager-demo.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlertmanager
 metadata:
@@ -11,17 +11,12 @@ metadata:
   namespace: vm
 spec:
   configRawYaml: |
-    #    global:
-    #      resolve_timeout: 5m
     route:
-      #      group_wait: 30s
-      #      group_interval: 5m
-      #      repeat_interval: 12h
-      receiver: 'webhook'
+      receiver: 'demo-app'
     receivers:
-    - name: 'webhook'
+    - name: 'demo-app'
       webhook_configs:
       - url: 'http://demo-app.default.svc:8080/alerting/webhook'
 EOF
 
-kubectl apply -f vmalertmanager-demo.yaml
+kubectl apply -f vmalertmanager-demo.yaml;

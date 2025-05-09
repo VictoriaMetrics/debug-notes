@@ -5,14 +5,9 @@ metadata:
   namespace: vm
 spec:
   configRawYaml: |
-    #    global:
-    #      resolve_timeout: 5m
     route:
-      #      group_wait: 30s
-      #      group_interval: 5m
-      #      repeat_interval: 12h
-      receiver: 'webhook'
+      receiver: 'demo-app'
     receivers:
-    - name: 'webhook'
+    - name: 'demo-app'
       webhook_configs:
       - url: 'http://demo-app.default.svc:8080/alerting/webhook'
