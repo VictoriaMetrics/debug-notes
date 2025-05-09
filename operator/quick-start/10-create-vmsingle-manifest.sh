@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > vmsingle-demo.yaml
+cat <<'EOF' > vmsingle-demo.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMSingle
 metadata:

@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > demo-app.yaml
+cat <<'EOF' > demo-app.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,10 +23,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: docker.io/victoriametrics/demo-app:1.0
-          ports:
-            - containerPort: 9100
-              name: metrics
+          image: docker.io/victoriametrics/demo-app:1.2
 ---
 apiVersion: v1
 kind: Service
@@ -39,9 +36,8 @@ spec:
   selector:
     app.kubernetes.io/name: demo-app
   ports:
-    - port: 9100
-      targetPort: metrics
-      name: metrics
+    - port: 8080
+      name: http
 EOF
 
 kubectl -n default apply -f demo-app.yaml

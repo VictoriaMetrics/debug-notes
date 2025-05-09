@@ -3,7 +3,7 @@
 set -e
 set -x
 
-cat <<EOF > demo-app-scrape.yaml
+cat <<'EOF' > demo-app-scrape.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
@@ -13,7 +13,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: demo-app
   endpoints:
-  - port: metrics
+  - port: http
+    path: /metrics
 EOF
 
 kubectl apply -f demo-app-scrape.yaml
