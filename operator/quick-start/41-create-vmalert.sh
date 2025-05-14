@@ -10,15 +10,15 @@ metadata:
   name: demo
   namespace: vm
 spec:
-  # Metrics source (VMStorage/VMCluster/VMSingle)
+  # Metrics source (VMCluster/VMSingle)
   datasource:
     url: "http://vmsingle-demo.vm.svc:8429"
 
-  # Where to send alert state
+  # Where alert state and recording rules are stored
   remoteWrite:
     url: "http://vmsingle-demo.vm.svc:8429"
 
-  # Where to load previous alert state from
+  # Where the previous alert state is loaded from. Optional
   remoteRead:
     url: "http://vmsingle-demo.vm.svc:8429"
 
@@ -26,8 +26,8 @@ spec:
   notifier:
     url: "http://vmalertmanager-demo.vm.svc:9093"
 
-  # How often to evaluate rules
-  evaluationInterval: "30s"
+  # How often the rules are evaluated
+  evaluationInterval: "10s"
 
   # Watch VMRule resources in all namespaces
   selectAllByDefault: true

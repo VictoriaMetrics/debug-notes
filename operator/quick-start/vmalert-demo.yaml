@@ -21,7 +21,7 @@ spec:
     url: "http://vmalertmanager-demo.vm.svc:9093"
 
   # How often to evaluate rules
-  evaluationInterval: "30s"
+  evaluationInterval: "10s"
 
   # Watch VMRule resources in all namespaces
   selectAllByDefault: true
