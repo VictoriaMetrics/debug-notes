@@ -19,25 +19,16 @@ spec:
         name: demo
         namespace: vm
       paths:
-        - "/vmui"
-        - "/vmui/.*"
-        - "/api/v1/query.*"
-        - "/api/v1/query_range"
-        - "/api/v1/series"
-        - "/api/v1/status/.*"
-        - "/api/v1/label/"
-        - "/api/v1/label/[^/]+/values"
+        - "/vmui.*"
+        - "/api/v1/query"
     # vmalert
     - crd:
         kind: VMAlert
         name: demo
         namespace: vm
       paths:
-        - "/vmalert"
-        - "/vmalert/.*"
-        - "/api/v1/groups"
-        - "/api/v1/alert"
-        - "/api/v1/alerts"
+        - "/vmalert.*"
+        - "/api/v1/rules"
 EOF
 
 kubectl -n vm apply -f vmuser-demo.yaml

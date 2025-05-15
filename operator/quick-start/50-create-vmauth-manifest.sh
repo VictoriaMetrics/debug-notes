@@ -10,11 +10,9 @@ metadata:
   name: demo
 spec:
   selectAllByDefault: true
-  userNamespaceSelector: {}
-  userSelector: {}
   ingress:
-    class_name: nginx # <-- change this to your ingress-controller
-    host: vm-demo.k8s.orb.local # <-- change this to your domain
+    class_name: 'nginx'                 # <-- Change this to match your Ingress controller (e.g., 'traefik')
+    host: victoriametrics.mycompany.com # <-- Change this to the domain name you’ll use
 EOF
 
 kubectl -n vm apply -f vmauth-demo.yaml
