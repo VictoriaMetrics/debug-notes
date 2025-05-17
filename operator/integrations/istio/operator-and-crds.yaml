@@ -7667,7 +7667,7 @@ spec:
                           actions:
                             items:
                               description: |-
-                                RocketchatAttachmentAction defines message attachments
+                                RocketchatAttachmentAction defines message attachements
                                 https://github.com/RocketChat/Rocket.Chat.Go.SDK/blob/master/models/message.go
                               properties:
                                 msg:
@@ -32259,7 +32259,7 @@ spec:
         env:
         - name: WATCH_NAMESPACE
           value: ""
-        image: docker.io/victoriametrics/operator:v0.58.0
+        image: docker.io/victoriametrics/operator:v0.57.0
         livenessProbe:
           httpGet:
             path: /health
