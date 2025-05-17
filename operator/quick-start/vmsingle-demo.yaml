@@ -3,3 +3,6 @@ kind: VMSingle
 metadata:
   name: demo
   namespace: vm
+spec:
+  # make it optional, remove from this file
+  retentionPeriod: "1"

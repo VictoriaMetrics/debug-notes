@@ -20,7 +20,7 @@ spec:
         namespace: vm
       paths:
         - "/vmui.*"
-        - "/api/v1/query"
+        - "/prometheus/.*"
     # vmalert
     - crd:
         kind: VMAlert
@@ -28,7 +28,9 @@ spec:
         namespace: vm
       paths:
         - "/vmalert.*"
-        - "/api/v1/rules"
+        - "/api/v1/groups"
+        - "/api/v1/alert"
+        - "/api/v1/alerts"
 EOF
 
 kubectl -n vm apply -f vmuser-demo.yaml
