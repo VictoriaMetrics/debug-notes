@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+cat <<'EOF' > demo-app-scrape.yaml
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
@@ -9,3 +15,6 @@ spec:
   endpoints:
   - port: http
     path: /metrics
+EOF
+
+kubectl apply -f demo-app-scrape.yaml;
