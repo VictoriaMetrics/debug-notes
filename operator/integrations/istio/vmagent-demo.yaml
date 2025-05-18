@@ -7,22 +7,3 @@ spec:
   selectAllByDefault: true
   remoteWrite:
     - url: "http://vmsingle-demo.vm.svc:8429/api/v1/write"
-
-  extraArgs:
-    remoteWrite.tlsInsecureSkipVerify: "true"
-  podMetadata:
-    annotations:
-      traffic.sidecar.istio.io/includeInboundPorts: ""   # do not intercept any inbound ports
-      traffic.sidecar.istio.io/includeOutboundIPRanges: ""  # do not intercept any outbound traffic
-      proxy.istio.io/config: |  # configure an env variable `OUTPUT_CERTS` to write certificates to the given folder
-        proxyMetadata:
-          OUTPUT_CERTS: /etc/istio-certs
-      sidecar.istio.io/userVolumeMount: '[{"name": "istio-certs", "mountPath": "/etc/istio-certs"}]'
-  volumeMounts:
-    - mountPath: /etc/istio-certs/
-      name: istio-certs
-      readOnly: true
-  volumes:
-    - emptyDir:
-        medium: Memory
-      name: istio-certs
