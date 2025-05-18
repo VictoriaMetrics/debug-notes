@@ -13,4 +13,5 @@ spec:
   mtls:
     mode: PERMISSIVE
 EOF
+
 kubectl -n istio-system apply -f global-peer-authentication.yaml;
