@@ -33,4 +33,5 @@ spec:
         - "/api/v1/alerts"
 EOF
 
-kubectl -n vm apply -f vmuser-demo.yaml
+kubectl -n vm apply -f vmuser-demo.yaml;
+kubectl -n vm wait --for=jsonpath='{.status.updateStatus}'=operational vmuser/demo;

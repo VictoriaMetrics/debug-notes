@@ -34,3 +34,5 @@ spec:
 EOF
 
 kubectl apply -f vmalert-demo.yaml;
+kubectl -n vm wait --for=jsonpath='{.status.updateStatus}'=operational vmalert/demo;
+kubectl -n vm rollout status deployment vmalert-demo  --watch=true;

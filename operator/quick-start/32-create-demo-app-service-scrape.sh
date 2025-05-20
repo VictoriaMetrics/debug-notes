@@ -17,4 +17,5 @@ spec:
     path: /metrics
 EOF
 
-kubectl apply -f demo-app-scrape.yaml
+kubectl apply -f demo-app-scrape.yaml;
+kubectl wait --for=jsonpath='{.status.updateStatus}'=operational vmservicescrape/demo-app-service-scrape;

@@ -15,4 +15,6 @@ spec:
     host: victoriametrics.mycompany.com # <-- Change this to the domain name you’ll use
 EOF
 
-kubectl -n vm apply -f vmauth-demo.yaml
+kubectl -n vm apply -f vmauth-demo.yaml;
+kubectl -n vm wait --for=jsonpath='{.status.updateStatus}'=operational vmauth/demo;
+kubectl -n vm rollout status deployment vmauth-demo  --watch=true;
