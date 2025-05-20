@@ -20,3 +20,4 @@ spec:
 EOF
 
 kubectl apply -f vmalertmanager-demo.yaml;
+kubectl -n vm wait --for=jsonpath='{.status.updateStatus}'=operational vmalertmanager/demo;

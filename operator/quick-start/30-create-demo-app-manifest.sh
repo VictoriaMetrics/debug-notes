@@ -40,4 +40,5 @@ spec:
       name: http
 EOF
 
-kubectl -n default apply -f demo-app.yaml
+kubectl -n default apply -f demo-app.yaml;
+kubectl -n default rollout status deployment demo-app  --watch=true;
