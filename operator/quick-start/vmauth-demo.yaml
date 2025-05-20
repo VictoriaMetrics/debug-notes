@@ -1,0 +1,9 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAuth
+metadata:
+  name: demo
+spec:
+  selectAllByDefault: true
+  ingress:
+    class_name: 'nginx'                 # <-- Change this to match your Ingress controller (e.g., 'traefik')
+    host: victoriametrics.mycompany.com # <-- Change this to the domain name you’ll use
