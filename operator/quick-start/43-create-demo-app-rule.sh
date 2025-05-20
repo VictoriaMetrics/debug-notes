@@ -24,4 +24,5 @@ spec:
 EOF
 
 
-kubectl apply -f demo-app-rule.yaml
+kubectl apply -f demo-app-rule.yaml;
+kubectl wait --for=jsonpath='{.status.updateStatus}'=operational vmrule/demo;

@@ -1,9 +1,3 @@
-#!/usr/bin/env bash
-
-set -e
-set -x
-
-cat <<'EOF' > demo-app.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,7 +32,3 @@ spec:
   ports:
     - port: 8080
       name: http
-EOF
-
-kubectl -n default apply -f demo-app.yaml;
-kubectl -n default rollout status deployment demo-app  --watch=true;

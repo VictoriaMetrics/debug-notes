@@ -18,4 +18,4 @@ spec:
 EOF
 
 kubectl apply -f demo-app-scrape.yaml;
-kubectl wait --for=jsonpath='{.status.updateStatus}'=operational vmservicescrape/demo-app-service-scrape;
+kubectl -n default wait --for=jsonpath='{.status.updateStatus}'=operational vmservicescrapes/demo-app-service-scrape;

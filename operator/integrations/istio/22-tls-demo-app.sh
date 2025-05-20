@@ -15,7 +15,12 @@ spec:
   endpoints:
   - port: http
     path: /metrics
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
+      caFile: /etc/istio-certs/root-cert.pem
+      certFile: /etc/istio-certs/cert-chain.pem
+      keyFile: /etc/istio-certs/key.pem
 EOF
 
-kubectl apply -f demo-app-scrape.yaml;
-kubectl wait --for=jsonpath='{.status.updateStatus}'=operational vmservicescrape/demo-app-service-scrape;
+kubectl apply -f demo-app-scrape.yaml
