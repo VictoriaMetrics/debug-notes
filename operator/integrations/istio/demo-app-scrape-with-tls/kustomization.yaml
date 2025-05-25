@@ -1,0 +1,8 @@
+resources:
+  - ../demo-app-scrape.yaml
+
+patches:
+  - path: patch.yaml
+    target:
+      kind: VMServiceScrape
+      name: demo-app-service-scrape
