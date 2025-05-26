@@ -10,8 +10,6 @@ spec:
         proxyMetadata:
           OUTPUT_CERTS: /etc/istio-certs
       sidecar.istio.io/userVolumeMount: '[{"name": "istio-certs", "mountPath": "/etc/istio-certs"}]'
-      traffic.sidecar.istio.io/includeInboundPorts: ""
-      traffic.sidecar.istio.io/includeOutboundIPRanges: ""
   remoteWrite:
   - url: http://vmsingle-demo.vm.svc:8429/api/v1/write
   selectAllByDefault: true
