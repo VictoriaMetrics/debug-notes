@@ -19,8 +19,6 @@ metadata:
 spec:
   podMetadata:
     annotations:
-      traffic.sidecar.istio.io/includeInboundPorts: ""   # do not intercept any inbound ports
-      traffic.sidecar.istio.io/includeOutboundIPRanges: ""  # do not intercept any outbound traffic
       proxy.istio.io/config: |  # configure an env variable `OUTPUT_CERTS` to write certificates to the given folder
         proxyMetadata:
           OUTPUT_CERTS: /etc/istio-certs
@@ -47,3 +45,4 @@ patches:
 EOF
 
 kustomize build vmagent-with-istio-certs -o vmagent-demo.yaml --load-restrictor=LoadRestrictionsNone;
+cat vmagent-demo.yaml;

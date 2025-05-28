@@ -26,4 +26,4 @@ spec:
 EOF
 
 kubectl -n istio-system apply -f global-peer-authentication.yaml;
-kubectl -n vm apply -f default-ns-peer-authentication.yaml
+kubectl -n vm apply -f vm-ns-peer-authentication.yaml

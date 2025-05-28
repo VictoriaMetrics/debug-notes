@@ -31,3 +31,4 @@ patches:
 EOF
 
 kustomize build demo-app-scrape-with-tls -o demo-app-scrape.yaml --load-restrictor=LoadRestrictionsNone;
+cat demo-app-scrape.yaml;
