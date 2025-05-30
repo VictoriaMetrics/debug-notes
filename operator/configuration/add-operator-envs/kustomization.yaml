@@ -1,8 +1,8 @@
 resources:
-  - operator-and-crds.yaml
+  - ../operator-and-crds.yaml
 
 patches:
-  - path: operator-patch.yaml
+  - path: patch.yaml
     target:
       kind: Deployment
       name: vm-operator

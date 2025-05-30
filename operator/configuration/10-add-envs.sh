@@ -3,7 +3,9 @@
 set -e
 set -x
 
-cat <<'EOF' > operator-patch.yaml
+mkdir -p add-operator-envs;
+
+cat <<'EOF' > add-operator-envs/patch.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,15 +23,16 @@ spec:
           value: "2400m"
 EOF
 
-cat <<'EOF' > kustomization.yaml
+cat <<'EOF' > add-operator-envs/kustomization.yaml
 resources:
-  - operator-and-crds.yaml
+  - ../operator-and-crds.yaml
 
 patches:
-  - path: operator-patch.yaml
+  - path: patch.yaml
     target:
       kind: Deployment
       name: vm-operator
 EOF
 
-kustomize build -o operator-and-crds.yaml;
+kustomize build add-operator-envs -o operator-and-crds.yaml --load-restrictor=LoadRestrictionsNone;
+cat operator-and-crds.yaml | grep -E -A 1 "VM_VMSINGLEDEFAULT_RESOURCE_LIMIT_MEM|VM_VMSINGLEDEFAULT_RESOURCE_LIMIT_CPU";

@@ -3,11 +3,6 @@
 set -e
 set -x
 
-#!/usr/bin/env bash
-
-set -e
-set -x
-
 mkdir -p vmagent-with-istio-certs;
 
 cat <<'EOF' > vmagent-with-istio-certs/patch.yaml
