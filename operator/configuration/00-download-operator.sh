@@ -3,6 +3,8 @@
 set -e
 set -x
 
+
+
 export VM_OPERATOR_VERSION=$(basename $(curl -fs -o /dev/null -w %{redirect_url} \
   https://github.com/VictoriaMetrics/operator/releases/latest))
 echo "VM_OPERATOR_VERSION=$VM_OPERATOR_VERSION"
