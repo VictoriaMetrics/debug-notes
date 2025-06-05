@@ -1,0 +1,42 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+processors:
+#extensions:
+#  health_check: {}
+
+#exporters:
+#  prometheusremotewrite/prom:
+#    endpoint: "http://localhost:9090/api/v1/write"
+#  prometheusremotewrite/vm:
+#    endpoint: "http://localhost:8428/api/v1/write"
+
+exporters:
+#  Send via OTEL
+  otlphttp/victoriametrics:
+    compression: gzip
+    encoding: proto
+    endpoint: http://localhost:8428/opentelemetry
+#    Cluster
+#    endpoint: http://localhost:8480/insert/2/opentelemetry
+
+#  Send via Prometheus Remote Write
+#  prometheusremotewrite/vm:
+#    compression: gzip
+#    endpoint: http://localhost:8428/api/vq/write
+#    Cluster
+#    endpoint: http://localhost:8480/insert/2/prometheus/
+  debug:
+
+service:
+#  extensions: [health_check]
+  pipelines:
+    metrics:
+      exporters:
+        - otlphttp/victoriametrics
+#        - prometheusremotewrite/vm
+      receivers:
+        - otlp
