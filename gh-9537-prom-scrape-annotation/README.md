@@ -20,8 +20,5 @@ Install demo app:
 kubectl apply -f demo-app.yaml
 ```
 
-Add auto discovery for prometheus.io config:
-```
-
-```
+Discovery is controlled by `VMPodScrape` in `demo-app.yaml`.
 
