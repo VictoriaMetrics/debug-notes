@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+  namespace: default
+  labels:
+    app.kubernetes.io/name: demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo-app
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+      labels:
+        app.kubernetes.io/name: demo-app
+    spec:
+      containers:
+        - name: main
+          image: docker.io/victoriametrics/demo-app:1.2
+          ports:
+            - containerPort: 8080
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app
+  namespace: default
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/metrics"
+  labels:
+    app.kubernetes.io/name: demo-app
+spec:
+  selector:
+    app.kubernetes.io/name: demo-app
+  ports:
+    - port: 8080
+      name: http
+---
+# from https://docs.victoriametrics.com/operator/integrations/prometheus/#auto-discovery-for-prometheusio-annotations
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: annotations-discovery
+spec:
+  # use well-known kubernetes label for job
+  # otherwise any discovered target will have annotations-discovery as a job
+  jobLabel: "app.kubernetes.io/name"
+  podMetricsEndpoints:
+    - relabelConfigs:
+        # Skip scrape for init containers
+        - action: drop
+          source_labels: [__meta_kubernetes_pod_container_init]
+          regex: "true"
+        # Match container port with port from annotation
+        - action: keep_if_equal
+          source_labels:
+            [__meta_kubernetes_pod_annotation_prometheus_io_port, __meta_kubernetes_pod_container_port_number]
+        # Check if scrape is enabled
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: "true"
+        # Set scrape path
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+        - source_labels: [__meta_kubernetes_pod_node_name]
+          action: replace
+          target_label: node
+  namespaceSelector: {} # You need to specify namespaceSelector here
+  selector: {} # You need to specify selector here
