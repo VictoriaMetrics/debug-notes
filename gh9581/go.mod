@@ -7,4 +7,6 @@ require (
 	github.com/golang/snappy v1.0.0
 )
 
+require github.com/VictoriaMetrics/easyproto v0.1.4 // indirect
+
 replace github.com/VictoriaMetrics/VictoriaMetrics => ../../VictoriaMetrics
