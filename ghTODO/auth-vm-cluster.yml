@@ -15,12 +15,12 @@ users:
       - "/insert/.*"
       url_prefix:
       - http://vminsert-1:8480
-      - http://vminsert-12:8480
-      - http://vminsert-13:8480
-      - http://vminsert-14:8480
-      - http://vminsert-15:8480
-      - http://vminsert-16:8480
-      - http://vminsert-17:8480
-      - http://vminsert-18:8480
-      - http://vminsert-19:8480
-      - http://vminsert-20:8480
+      - http://vminsert-1-1:8480
+      - http://vminsert-1-2:8480
+#      - http://vminsert-14:8480
+#      - http://vminsert-15:8480
+#      - http://vminsert-16:8480
+#      - http://vminsert-17:8480
+#      - http://vminsert-18:8480
+#      - http://vminsert-19:8480
+#      - http://vminsert-20:8480

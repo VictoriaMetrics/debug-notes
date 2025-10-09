@@ -1,6 +1,6 @@
 module anote
 
-go 1.25.0
+go 1.25.2
 
 require (
 	github.com/VictoriaMetrics/VictoriaMetrics v1.115.0

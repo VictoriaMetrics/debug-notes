@@ -70,7 +70,7 @@ func main() {
 }
 
 func handleRequest(c *http.Client, sender int) {
-	payload := genPayload(10000, sender)
+	payload := genPayload(20000, sender)
 
 	req, _ := http.NewRequest("POST", `http://127.0.0.1:8429/api/v1/write`, bytes.NewReader(payload))
 	//req, _ := http.NewRequest("POST", `http://127.0.0.1:8480/insert/0/prometheus/api/v1/write`, bytes.NewReader(payload))

@@ -7,7 +7,7 @@ services:
     volumes:
       - ./vmagentdata:/vmagentdata
     command:
-      - "--remoteWrite.queues=100"
+      - "--remoteWrite.queues=900"
       - "--remoteWrite.url=http://vmauth:8427/insert/0/prometheus/api/v1/write"
       - "--remoteWrite.tmpDataPath=/vmagentdata"
       - "--remoteWrite.basicAuth.username=foo"
@@ -40,8 +40,9 @@ services:
       - ./../../VictoriaMetrics/dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
 
   vmstorage-1:
-    image:   docker.io/victoriametrics/vmstorage:heads-cluster-0-g0af6553878-dirty-c16f2d29
-    #    image: victoriametrics/vmstorage:v1.126.0-cluster
+#    image:   docker.io/victoriametrics/vmstorage:heads-cluster-0-g0af6553878-dirty-c16f2d29
+#    image: victoriametrics/vmstorage:v1.126.0-cluster
+    image: victoriametrics/vmstorage:v1.126.0-enterprise-cluster
     volumes:
       - strgdata-1:/storage
       - ./../../license.txt:/license.txt
@@ -49,14 +50,33 @@ services:
 #      - "--fsWriteSlowdown=0"
 #      - "--fsReadSlowdown=0"
 #      - "--partSlowdown=0"
-      - "--filestream.writeSleepMultiplier=50"
+#      - "--filestream.writeSleepMultiplier=50"
       - "--storageDataPath=/storage"
-#      - "--maxConcurrentInserts=8"
-#      - "--licenseFile=/license.txt"
-#      - "--downsampling.period={__name__=\"\"}:30s:30s,{__name__=\"\"}:1h:1h,7d:1m,30d:5m"
+      - "--maxConcurrentInserts=1"
+      - "--licenseFile=/license.txt"
+      - "--downsampling.period={__name__=\"\"}:30s:30s,{__name__=\"\"}:1h:1h,7d:1m,30d:5m"
     restart: always
     cpus: 2
-    mem_limit: 2g
+    mem_limit: 6g
+
+#  vmstorage-1-1:
+##    image:   docker.io/victoriametrics/vmstorage:heads-cluster-0-g0af6553878-dirty-c16f2d29
+#    image: victoriametrics/vmstorage:v1.126.0-cluster
+#    volumes:
+#      - strgdata-1-1:/storage
+##      - ./../../license.txt:/license.txt
+#    command:
+#      #      - "--fsWriteSlowdown=0"
+#      #      - "--fsReadSlowdown=0"
+#      #      - "--partSlowdown=0"
+##      - "--filestream.writeSleepMultiplier=50"
+#      - "--storageDataPath=/storage"
+#    #      - "--maxConcurrentInserts=8"
+#    #      - "--licenseFile=/license.txt"
+#    #      - "--downsampling.period={__name__=\"\"}:30s:30s,{__name__=\"\"}:1h:1h,7d:1m,30d:5m"
+#    restart: always
+#    cpus: 2
+#    mem_limit: 6g
 
   vmstorage-2:
     image: victoriametrics/vmstorage:v1.126.0-cluster
@@ -67,96 +87,115 @@ services:
     restart: always
 
   vminsert-1:
-    image: victoriametrics/vminsert:v1.126.0-cluster
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+    image: docker.io/victoriametrics/vminsert:heads-cluster-0-gc77d3f2898-dirty-33cca27c
     depends_on:
       - "vmstorage-1"
     ports:
       - "8480:8480"
     command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
+      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+      - "--maxConcurrentInserts=900"
+      - "--maxInsertPacketSizeForVMInsertMB=0.5"
     restart: always
 
-  vminsert-12:
-    image: victoriametrics/vminsert:v1.126.0-cluster
+  vminsert-1-1:
+    #    image: victoriametrics/vminsert:v1.126.0-cluster
+    image: docker.io/victoriametrics/vminsert:heads-cluster-0-gc77d3f2898-dirty-33cca27c
     depends_on:
       - "vmstorage-1"
+#    ports:
+#      - "8480:8480"
     command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
+      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+      - "--maxConcurrentInserts=900"
+      - "--maxInsertPacketSizeForVMInsertMB=0.5"
     restart: always
 
-  vminsert-13:
-    image: victoriametrics/vminsert:v1.126.0-cluster
+  vminsert-1-2:
+    #    image: victoriametrics/vminsert:v1.126.0-cluster
+    image: docker.io/victoriametrics/vminsert:heads-cluster-0-gc77d3f2898-dirty-33cca27c
     depends_on:
       - "vmstorage-1"
+#    ports:
+#      - "8480:8480"
     command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
+      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+      - "--maxConcurrentInserts=900"
+      - "--maxInsertPacketSizeForVMInsertMB=0.5"
     restart: always
-
-  vminsert-14:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
-
-  vminsert-15:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
-
-  vminsert-16:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
-
-  vminsert-17:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
-
-  vminsert-18:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
-
-  vminsert-19:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
-
-  vminsert-20:
-    image: victoriametrics/vminsert:v1.126.0-cluster
-    depends_on:
-      - "vmstorage-1"
-    command:
-      - "--storageNode=vmstorage-1:8400"
-      - "--maxConcurrentInserts=4"
-    restart: always
+#
+#  vminsert-13:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-14:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-15:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-16:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-17:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-18:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-19:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
+#
+#  vminsert-20:
+#    image: victoriametrics/vminsert:v1.126.0-cluster
+#    depends_on:
+#      - "vmstorage-1"
+#    command:
+#      - "--storageNode=vmstorage-1:8400,vmstorage-1-1:8400"
+#      - "--maxConcurrentInserts=8"
+#    restart: always
 
   vminsert-2:
     image: victoriametrics/vminsert:v1.126.0-cluster
@@ -194,5 +233,7 @@ volumes:
 #  vmagentdata: {}
   vmagentdata-2: {}
   strgdata-1: {}
+  strgdata-1-1: {}
+  strgdata-1-2: {}
   strgdata-2: {}
   grafanadata: {}
