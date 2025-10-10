@@ -20,6 +20,7 @@ func main() {
 		numBackends = 10
 		concurrency = 1000
 		maxRequests = 10_000_000
+		maxLatency  = 20
 	)
 
 	// Initialize backend URLs
@@ -50,6 +51,7 @@ func main() {
 	var wg sync.WaitGroup
 
 	fmt.Printf("Starting test with %d backends, %d concurrent workers, %d total requests\n", numBackends, concurrency, maxRequests)
+	fmt.Printf("Request latency picked at random from 1 to %d microseconds\n", maxLatency)
 	fmt.Printf("Strategy: %s\n\n", *strategy)
 
 	startTime := time.Now()
@@ -83,7 +85,7 @@ func main() {
 			distribution[idx].Add(1)
 
 			// Add random delay from 1ms to 10ms
-			requestLatency := time.Duration(1+rand.Intn(10)) * time.Microsecond
+			requestLatency := time.Duration(1+rand.Intn(maxLatency)) * time.Microsecond
 
 			// Simulate request processing
 			time.Sleep(requestLatency)
