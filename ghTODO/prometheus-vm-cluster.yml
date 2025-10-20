@@ -9,8 +9,8 @@ scrape_configs:
 - job_name: vminsert
   static_configs:
   - targets:
-    - 192.168.50.201:8381
-    - 192.168.50.201:8382
+    - 192.168.50.103:8381
+    - 192.168.50.103:8382
     #- host.docker.internal:8383
 - job_name: vmstorage
   static_configs:
@@ -20,4 +20,4 @@ scrape_configs:
 - job_name: vmauth
   static_configs:
     - targets:
-        - host.docker.internal:8427
+        - 192.168.50.103:8427
