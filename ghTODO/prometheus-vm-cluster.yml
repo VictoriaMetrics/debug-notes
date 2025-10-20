@@ -1,21 +1,23 @@
 global:
-  scrape_interval: 2s
+  scrape_interval: 1s
 
 scrape_configs:
-- job_name: vmagent
-  static_configs:
-  - targets:
-    - vmagent:8429
+#- job_name: vmagent
+#  static_configs:
+#  - targets:
+#    - host.docker.internal:8429
 - job_name: vminsert
   static_configs:
   - targets:
-    - vminsert-1:8480
-    - vminsert-1-1:8480
-    - vminsert-1-2:8480
-#    - vminsert-14:8480
-#    - vminsert-15:8480
+    - 192.168.50.201:8381
+    - 192.168.50.201:8382
+    #- host.docker.internal:8383
 - job_name: vmstorage
   static_configs:
   - targets:
-    - vmstorage-1:8482
-#    - vmstorage-1-1:8482
+    - 192.168.50.102:8481
+    - 192.168.50.102:8482
+- job_name: vmauth
+  static_configs:
+    - targets:
+        - host.docker.internal:8427

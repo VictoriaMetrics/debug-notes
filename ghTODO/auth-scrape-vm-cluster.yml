@@ -10,10 +10,4 @@ users:
       - "/select/.*"
       - "/admin/.*"
       url_prefix:
-      - http://192.168.50.102:8481
-    - src_paths:
-      - "/insert/.*"
-      url_prefix:
-      - http://127.0.0.1:8381
-      - http://127.0.0.1:8382
-
+      - http://vmselect:8481
