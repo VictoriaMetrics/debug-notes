@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 1s
+
+scrape_configs:
+- job_name: vminsert
+  static_configs:
+  - targets:
+      - 127.0.0.1:8381
+      - 127.0.0.1:8382
+- job_name: vmstorage
+  static_configs:
+  - targets:
+    - 127.0.0.1:8483
+    - 127.0.0.1:8484
+- job_name: vmauth
+  static_configs:
+    - targets:
+      - 127.0.0.1:8427

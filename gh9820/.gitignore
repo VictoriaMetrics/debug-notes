@@ -1,0 +1,10 @@
+vmstorage-legacy
+vmstorage-legacy-data
+vmstorage-rpc
+vmstorage-rpc-data
+vminsert-legacy
+vminsert-rpc
+vmselect
+vmauth
+vmagent
+vmagentdata
