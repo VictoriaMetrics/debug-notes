@@ -1,0 +1,34 @@
+scrape_configs:
+  - job_name: stat
+    metric_relabel_configs:
+      # The team label showcases extra_filter functionality used with vmsingle.
+      - if: "{instance =~ 'vmauth.*'}"
+        action: replace
+        target_label: team
+        replacement: admin
+      - if: "{instance =~ 'vmagent.*'}"
+        action: replace
+        target_label: team
+        replacement: dev
+
+      # The vm_account_id and vm_project_id labels showcase tenant functionality used with vmcluster
+      - if: "{instance =~ 'vmauth.*'}"
+        action: replace
+        target_label: vm_account_id
+        replacement: '0'
+      - if: "{instance =~ 'vmauth.*'}"
+        action: replace
+        target_label: vm_project_id
+        replacement: '0'
+      - if: "{instance =~ 'vmagent.*'}"
+        action: replace
+        target_label: vm_account_id
+        replacement: '0'
+      - if: "{instance =~ 'vmagent.*'}"
+        action: replace
+        target_label: vm_project_id
+        replacement: '1'
+    static_configs:
+      - targets:
+          - vmagent:8429
+          - vmauth:8427
