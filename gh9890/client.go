@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	//"github.com/HdrHistogram/hdrhistogram-go"
 	"github.com/VictoriaMetrics/VictoriaMetrics/lib/prompb"
 	"github.com/golang/snappy"
-	"golang.org/x/time/rate"
 )
 
 var idx atomic.Int64
@@ -25,43 +23,38 @@ func main() {
 		log.Fatal("invalid number of arguments")
 	}
 
-	rateLimit0 := os.Args[1]
-	if rateLimit0 == "" {
-		log.Fatalf("invalid rateLimit limit: %q", rateLimit0)
+	workersNum0 := os.Args[1]
+	if workersNum0 == "" {
+		log.Fatalf("invalid worker number: %q", workersNum0)
 	}
-	rateLimit, err := strconv.Atoi(rateLimit0)
+	workersNum, err := strconv.Atoi(workersNum0)
 	if err != nil {
-		log.Fatalf("invalid rate limit %q: %v", rateLimit0, err)
+		log.Fatalf("invalid workers number %q: %v", workersNum0, err)
 	}
-
-	l := rate.NewLimiter(rate.Limit(rateLimit), rateLimit)
 
 	c := &http.Client{
 		Timeout: time.Minute,
 	}
 
-	go func() {
-		t := time.NewTicker(time.Minute)
-		defer t.Stop()
-
-		for range t.C {
-			idx.Add(1)
-		}
-	}()
+	//go func() {
+	//	t := time.NewTicker(time.Minute)
+	//	defer t.Stop()
+	//
+	//	for range t.C {
+	//		idx.Add(1)
+	//	}
+	//}()
 
 	//hdrhistogram.New(0, 100000000)
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt)
 
-	for i := 0; i < 900; i++ {
+	for i := 0; i < workersNum; i++ {
 		go func() {
 			for {
-				if err := l.Wait(context.Background()); err != nil {
-					log.Panicf("rate limit wait error: %s", err)
-				}
-
-				handleRequest(c, i%10)
+				handleRequest(c, i)
+				time.Sleep(time.Millisecond * 100)
 			}
 		}()
 	}
@@ -72,8 +65,8 @@ func main() {
 func handleRequest(c *http.Client, sender int) {
 	payload := genPayload(20000, sender)
 
-	req, _ := http.NewRequest("POST", `http://127.0.0.1:8429/api/v1/write`, bytes.NewReader(payload))
-	//req, _ := http.NewRequest("POST", `http://127.0.0.1:8480/insert/0/prometheus/api/v1/write`, bytes.NewReader(payload))
+	//req, _ := http.NewRequest("POST", `http://127.0.0.1:8429/api/v1/write`, bytes.NewReader(payload))
+	req, _ := http.NewRequest("POST", `http://127.0.0.1:8480/insert/0/prometheus/api/v1/write`, bytes.NewReader(payload))
 	req.Header.Set("Content-Type", "application/x-protobuf")
 	req.Header.Set("Connection", "keep-alive")
 	req.Header.Set("User-Agent", "aUserAgent")

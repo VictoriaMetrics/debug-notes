@@ -1,0 +1,57 @@
+services:
+  vmagent:
+    image: 'victoriametrics/vmagent:v1.131.0'
+    volumes:
+      - './prometheus-vm-cluster.yml:/etc/prometheus/prometheus.yml'
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://homelab:8428/api/v1/write"
+      - "--remoteWrite.label=test=slowness-rerouting"
+    restart: 'always'
+
+  vminsert-1:
+    image: 'docker.io/victoriametrics/vminsert:v1.131.0-cluster'
+#    image: 'docker.io/victoriametrics/vminsert:heads-slowest-rerouting-0-g9cf2e551f5-dirty-f5cad30c'
+    depends_on:
+      - "vmstorage-1"
+      - "vmstorage-2"
+      - "vmstorage-3"
+    ports:
+      - "8480:8480"
+    command:
+      - "--storageNode=vmstorage-1:8400,vmstorage-2:8400,vmstorage-3:8400"
+      - "--maxConcurrentInserts=900"
+      - "--disableReroutingOnUnavailable=true"
+      - "--disableRerouting=false"
+    restart: 'always'
+
+  vmstorage-1:
+    image: 'victoriametrics/vmstorage:v1.131.0-cluster'
+    volumes:
+      - './vmstoragedata-1:/storage'
+    command:
+      - "--storageDataPath=/storage"
+    restart: 'always'
+    # emulate shortage of resource on one of the storages
+    cpus: '1'
+    mem_limit: '1g'
+
+  vmstorage-2:
+    image: 'victoriametrics/vmstorage:v1.131.0-cluster'
+    volumes:
+      - './vmstoragedata-2:/storage'
+    command:
+      - "--storageDataPath=/storage"
+    restart: 'always'
+    cpus: '2'
+    mem_limit: '4g'
+
+  vmstorage-3:
+    image: 'victoriametrics/vmstorage:v1.131.0-cluster'
+    volumes:
+      - './vmstoragedata-3:/storage'
+    command:
+      - "--storageDataPath=/storage"
+    restart: 'always'
+    cpus: '2'
+    mem_limit: '4g'
