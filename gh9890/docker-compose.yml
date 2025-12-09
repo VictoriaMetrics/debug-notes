@@ -10,8 +10,8 @@ services:
     restart: 'always'
 
   vminsert-1:
-#    image: 'docker.io/victoriametrics/vminsert:v1.131.0-cluster'
-    image: 'docker.io/victoriametrics/vminsert:heads-slowest-rerouting-0-g7ca2235ebf'
+    image: 'docker.io/victoriametrics/vminsert:v1.131.0-cluster'
+#    image: 'docker.io/victoriametrics/vminsert:heads-slowest-rerouting-0-ga5a0e5ab7d'
     depends_on:
       - "vmstorage-1"
       - "vmstorage-2"
@@ -33,10 +33,10 @@ services:
       - "--storageDataPath=/storage"
     restart: 'always'
     # emulate shortage of resource on one of the storages
-#    cpus: '1'
-#    mem_limit: '1g'
-    cpus: '2'
-    mem_limit: '4g'
+    cpus: '1'
+    mem_limit: '1g'
+#    cpus: '2'
+#    mem_limit: '4g'
 
   vmstorage-2:
     image: 'victoriametrics/vmstorage:v1.131.0-cluster'
