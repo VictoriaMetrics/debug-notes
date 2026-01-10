@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-var response100KB = make([]byte, 100*1024)
+var response = make([]byte, 5000*1024)
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	// Discard request body
@@ -17,12 +17,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Send 100KB response
 	w.Header().Set("Content-Type", "application/octet-stream")
 	w.WriteHeader(http.StatusOK)
-	w.Write(response100KB)
+	w.Write(response)
 }
 
 func main() {
-	for i := 0; i < len(response100KB); i++ {
-		response100KB[i] = byte(rand.Int31())
+	for i := 0; i < len(response); i++ {
+		response[i] = byte(rand.Int31())
 	}
 
 	http.HandleFunc("/", handler)
