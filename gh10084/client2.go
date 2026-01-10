@@ -11,16 +11,15 @@ import (
 )
 
 var (
-	pauseDuration         = flag.Duration("pause", 10*time.Millisecond, "Duration to pause every 4KB when writing request")
-	responsePauseDuration = flag.Duration("response-pause", 10*time.Millisecond, "Duration to pause every 4KB when reading response")
-	targetAddr            = flag.String("addr", "127.0.0.1:8427", "Target address")
-	requestPath           = flag.String("path", "/foo", "Request path")
+	pauseDuration = flag.Duration("pause", 10*time.Millisecond, "Duration to pause every 4KB when writing request")
+	targetAddr    = flag.String("addr", "127.0.0.1:8427", "Target address")
+	requestPath   = flag.String("path", "/foo", "Request path")
 )
 
 func main() {
 	flag.Parse()
 
-	log.Printf("Starting client with write pause: %v, read pause: %v", *pauseDuration, *responsePauseDuration)
+	log.Printf("Starting client with write pause: %v", *pauseDuration)
 	log.Printf("Target: %s%s", *targetAddr, *requestPath)
 
 	// Prepare 100KB payload
@@ -87,27 +86,11 @@ func sendRequest(payload []byte) error {
 	}
 	log.Printf("Finished writing %d bytes total, now reading response...", len(fullRequest))
 
-	// Read first byte of response
-	firstByte := make([]byte, 4097)
-	n, err := conn.Read(firstByte)
+	b, err := io.ReadAll(conn)
 	if err != nil {
-		return fmt.Errorf("failed to read first byte of response: %w", err)
-	}
-	if n != 4097 {
-		return fmt.Errorf("expected to read 1 byte, got %d", n)
-	}
-	log.Printf("Read first byte of response, pausing for %v...", *responsePauseDuration)
-
-	// Pause
-	time.Sleep(*responsePauseDuration)
-
-	// Read the rest of the response
-	restOfResponse, err := io.ReadAll(conn)
-	if err != nil {
-		return fmt.Errorf("failed to read rest of response: %w", err)
+		return fmt.Errorf("failed to read full response: %w", err)
 	}
 
-	totalRead := 1 + len(restOfResponse)
-	log.Printf("Received %d bytes in response", totalRead)
+	log.Printf("Received %d bytes in response", len(b)+1)
 	return nil
 }

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-var response = make([]byte, 5000*1024)
+var response = make([]byte, 1000*1024)
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	// Discard request body
