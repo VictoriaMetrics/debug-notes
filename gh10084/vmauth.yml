@@ -1,3 +1,16 @@
+#unauthorized_user:
+#  url_prefix:
+#    - http://127.0.0.1:8899
+
+#users:
+#  - username: foo
+#    password: bar
+#    url_prefix:
+#    - "http://127.0.0.1:8899"
+
 unauthorized_user:
-  url_prefix:
-    - http://127.0.0.1:8899
+  url_map:
+  - url_prefix:
+      - 'http://127.0.0.1:7799'
+    src_paths:
+      - /.*

@@ -11,8 +11,12 @@ var response = make([]byte, 1000*1024)
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	// Discard request body
-	io.Copy(io.Discard, r.Body)
-	r.Body.Close()
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "failed to read request body", http.StatusInternalServerError)
+		return
+	}
+	log.Println("read request body:", len(b), "bytes")
 
 	// Send 100KB response
 	w.Header().Set("Content-Type", "application/octet-stream")

@@ -61,6 +61,7 @@ func sendRequest(payload []byte) error {
 			"Host: %s\r\n"+
 			"Content-Type: application/octet-stream\r\n"+
 			"Content-Length: %d\r\n"+
+			"Authorization: Basic Zm9vOmJhcg==\r\n"+
 			"Connection: close\r\n"+
 			"\r\n",
 		*requestPath,
@@ -68,6 +69,14 @@ func sendRequest(payload []byte) error {
 		len(payload),
 	)
 
+	if _, err := conn.Write([]byte(httpRequest)); err != nil {
+		return fmt.Errorf("failed to write first byte: %w", err)
+	}
+	log.Printf("Sent first byte, pausing for %v...", *pauseDuration)
+
+	conn.Close()
+	time.Sleep(time.Second * 2)
+	
 	// Combine headers and payload
 	fullRequest := append([]byte(httpRequest), payload...)
 

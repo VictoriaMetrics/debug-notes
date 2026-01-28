@@ -15,19 +15,19 @@ func main() {
 	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
 		wg.Go(func() {
-			buf := bytes.NewBuffer(make([]byte, 100*1024))
-			for i := 0; i < buf.Len(); i++ {
-				b := buf.Bytes()
-				b[i] = byte(rand.Int31())
-			}
-
 			for {
-				req, err := http.NewRequest("POST", `http://127.0.0.1:8427/foo`, buf)
+				b := make([]byte, 17000)
+				for i := 0; i < len(b); i++ {
+					b[i] = byte(rand.Int31())
+				}
+				
+				req, err := http.NewRequest("POST", `http://127.0.0.1:8427/foo`, bytes.NewBuffer(b))
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				req.Header.Set("Content-Type", "application/octet-stream")
+				req.Header.Set("Authorization", "Basic Zm9vOmJhcg==")
 
 				resp, err := http.DefaultClient.Do(req)
 				if err != nil {
