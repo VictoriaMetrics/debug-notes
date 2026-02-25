@@ -1,0 +1,31 @@
+# auth.yaml
+# todo: not supported yet
+#oidc:
+#  realms:
+#    - name: keycloak
+#      issuer_url: http://keycloak:3001/realms/master
+#      # It's recommended to enable discovery in production
+#      skip_discovery: true
+users:
+  - jwt:
+      # todo: oidc public key discovery not supported yet.
+      # let's disable signature verification for testing purposes, but it should be enabled before merging.
+      skip_verify: true
+      # todo: claim matching not supported yet
+      # The value should match "aud" claim from JWT token
+      # Use oidc.claims.client_id to change the claim used as client ID
+      #      client_id: account
+      #      realm: keycloak
+    url_map:
+      - src_paths:
+          - "/insert/.*"
+        drop_src_path_prefix_parts: 1
+        url_prefix: "http://vminsert:8480/insert/{{.MetricsTenant}}/prometheus/"
+      - src_paths:
+          - "/select/.*"
+        drop_src_path_prefix_parts: 1
+        url_prefix: "http://vmselect:8481/select/{{.MetricsTenant}}/prometheus/"
+      - src_paths:
+          - "/single/.*"
+        drop_src_path_prefix_parts: 1
+        url_prefix: "http://vmsingle:8428?extra_label={{.MetricsExtraLabels}}"
