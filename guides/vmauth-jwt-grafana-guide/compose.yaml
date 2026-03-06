@@ -16,23 +16,23 @@ services:
       - keycloakdata:/opt/keycloak/data
 
   vmsingle:
-    image: victoriametrics/victoria-metrics:v1.136.0
+    image: victoriametrics/victoria-metrics:v1.137.0
 
   vmstorage:
-    image: victoriametrics/vmstorage:v1.136.0-cluster
+    image: victoriametrics/vmstorage:v1.137.0-cluster
 
   vminsert:
-    image: victoriametrics/vminsert:v1.136.0-cluster
+    image: victoriametrics/vminsert:v1.137.0-cluster
     command:
       - -storageNode=vmstorage:8400
 
   vmselect:
-    image: victoriametrics/vmselect:v1.136.0-cluster
+    image: victoriametrics/vmselect:v1.137.0-cluster
     command:
       - -storageNode=vmstorage:8401
 
   vmagent:
-    image: victoriametrics/vmagent:v1.136.0
+    image: victoriametrics/vmagent:v1.137.0
     volumes:
       - ./scrape.yaml:/etc/vmagent/config.yaml
     command:
@@ -41,14 +41,13 @@ services:
       - -remoteWrite.url=http://vmsingle:8428/api/v1/write
 
   vmauth:
-    image: docker.io/victoriametrics/vmauth:heads-vmauth-jwt-templating-0-gedc503233b
+    image: docker.io/victoriametrics/vmauth:heads-vmauth-jwt-oidc-0-g5b053c9bbb-dirty-c2e46287
     ports:
       - 8427:8427
     volumes:
       - ./auth.yaml:/auth.yaml
     command:
       - -auth.config=/auth.yaml
-
 
   grafana:
     image: grafana/grafana:12.1.0
@@ -60,7 +59,7 @@ services:
       GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP: true
       GF_AUTH_GENERIC_OAUTH_NAME: keycloak
       GF_AUTH_GENERIC_OAUTH_CLIENT_ID: grafana
-      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: "Aufd9ykF8SFirOSXxQaTPsGALk2Piq5K"
+      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: "7kAgUTwvfybtrsUJQpEdJ3PWz9bcwQkS"
       GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH: email
       GF_AUTH_GENERIC_OAUTH_LOGIN_ATTRIBUTE_PATH: username
       GF_AUTH_GENERIC_OAUTH_NAME_ATTRIBUTE_PATH: full_name
