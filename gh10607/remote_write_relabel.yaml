@@ -1,0 +1,4 @@
+- target_label: "add_label_before_remote_write_1"
+  replacement: "label_value_3"
+- target_label: "add_label_before_remote_write_2"
+  replacement: "label_value_6"

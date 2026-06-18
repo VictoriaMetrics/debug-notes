@@ -1,0 +1,4 @@
+- target_label: "add_label_before_remote_write_to_a_url_1"
+  replacement: "label_value_4"
+- target_label: "add_label_before_remote_write_to_a_url_2"
+  replacement: "label_value_5"
