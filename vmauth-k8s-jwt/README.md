@@ -71,6 +71,21 @@ no filters); without it vmauth verifies the token and still returns `401`
 `-logInvalidAuthTokens` (set in the manifest) is what surfaces these reasons in the vmauth log.
 vmauth reloads `-auth.config` only on SIGHUP, so after changing the ConfigMap run `k rollout restart deploy/vmauth`.
 
+## 5. In-cluster client with a projected token (per-cluster audience)
+
+`curl-client.yaml` mounts a projected SA token with `audience: vmauth-prod-eu-1` and calls vmauth every 5s
+(re-reading the token, since kubelet rotates it). `vmauth-oidc.yaml` has a matching user
+(`aud: vmauth-prod-eu-1`, `sub: system:serviceaccount:default:curl-client`).
+
+```bash
+k apply -f curl-client.yaml
+k logs -f deploy/curl-client   # ... http_code=200
+```
+
+A unique `aud` per cluster is how to tell clusters apart when they share the default issuer and SA name:
+the token from another cluster can claim the same `aud`, but fails signature verification against this
+user's keys.
+
 ## Cleanup
 
 ```bash

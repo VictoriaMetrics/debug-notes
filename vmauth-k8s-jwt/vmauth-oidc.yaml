@@ -40,6 +40,15 @@ data:
         # (app/vmauth/main.go: HasVMAccessClaim() || DefaultVMAccessClaim != nil).
         default_vm_access_claim: {}
       url_prefix: "http://vmsingle:8428/"
+    # curl-client (curl-client.yaml): projected token with a per-cluster audience
+    - jwt:
+        oidc:
+          issuer: "https://kubernetes.default.svc.cluster.local"
+        match_claims:
+          aud: "vmauth-prod-eu-1"
+          sub: "system:serviceaccount:default:curl-client"
+        default_vm_access_claim: {}
+      url_prefix: "http://vmsingle:8428/"
 ---
 apiVersion: apps/v1
 kind: Deployment
