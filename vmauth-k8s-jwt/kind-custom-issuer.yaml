@@ -1,0 +1,14 @@
+# kind cluster whose kube-apiserver signs SA tokens with a custom issuer.
+# Note: kind merges extraArgs by name, so a repeated --service-account-issuer
+# (old issuer kept for migration) cannot be expressed here; only one value survives.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+      extraArgs:
+      - name: service-account-issuer
+        value: https://k8s-prod-eu-2.example.com
