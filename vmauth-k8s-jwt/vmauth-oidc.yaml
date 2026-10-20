@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmsingle
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: vmsingle}
+  template:
+    metadata:
+      labels: {app: vmsingle}
+    spec:
+      containers:
+      - name: vmsingle
+        image: victoriametrics/victoria-metrics:v1.154.1
+        args: ["-retentionPeriod=1d"]
+        ports: [{containerPort: 8428}]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmsingle
+spec:
+  selector: {app: vmsingle}
+  ports: [{port: 8428, targetPort: 8428}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vmauth
+data:
+  auth.yml: |
+    users:
+    - jwt:
+        oidc:
+          issuer: "https://kubernetes.default.svc.cluster.local"
+        match_claims:
+          aud: "vmauth"
+        # SA tokens have no `vm_access` claim; without a default vmauth rejects them
+        # (app/vmauth/main.go: HasVMAccessClaim() || DefaultVMAccessClaim != nil).
+        default_vm_access_claim: {}
+      url_prefix: "http://vmsingle:8428/"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: vmauth}
+  template:
+    metadata:
+      labels: {app: vmauth}
+    spec:
+      containers:
+      - name: vmauth
+        image: victoriametrics/vmauth:v1.154.1
+        args: ["-auth.config=/cfg/auth.yml", "-loggerLevel=INFO", "-logInvalidAuthTokens"]
+        env:
+        # Go (Linux) loads every PEM from these dirs in addition to the default bundle file:
+        # system roots + cluster CA, so the kube-apiserver cert verifies for OIDC discovery.
+        - name: SSL_CERT_DIR
+          value: /etc/ssl/certs:/var/run/secrets/kubernetes.io/serviceaccount
+        ports: [{containerPort: 8427}]
+        volumeMounts: [{name: cfg, mountPath: /cfg}]
+      volumes: [{name: cfg, configMap: {name: vmauth}}]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmauth
+spec:
+  selector: {app: vmauth}
+  ports: [{port: 8427, targetPort: 8427}]

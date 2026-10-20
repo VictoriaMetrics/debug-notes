@@ -1,0 +1,14 @@
+# Allows unauthenticated clients (vmauth's OIDC client sends no credentials)
+# to read /.well-known/openid-configuration and /openid/v1/jwks.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: oidc-anon
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:service-account-issuer-discovery
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:unauthenticated
